@@ -9,7 +9,7 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
 
     const addTask = () => {
         if (title.trim() !== '') {
-            props.addTask(title.trim(), props.id)
+            props.addItem(title.trim())
             setTitle('')
         } else {
             setError('Title is required')
@@ -25,33 +25,12 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
         setTitle(event.currentTarget.value)
     }
 
-    const onAllClickHandler = () => {
-        props.changeFilter(props.filter, 'all')
-    }
-    const onActiveClickHandler = () => {
-        props.changeFilter(props.filter, 'active')
-    }
-    const onCompletedClickHandler = () => {
-        props.changeFilter(props.filter, 'completed')
-    }
-    const removeTodolistBotton = () => {
-        props.removeTodolist(props.id)
-    }
-
-
     return <div>
-        <h3>{props.title}
-            <button onClick={removeTodolistBotton}>✖</button>
-        </h3>
-        <div>
-            <input value={title} onChange={onChangeHandlerInput} onKeyUp={onKeyUHandler}
-                   className={error ? 'error' : ''}/>
-            <button onClick={addTask}>+</button>
-            {error && <div className='errorMessage'>{error}</div>}
-        </div>
-
-
-        }
-
-
-        }
+        <input value={title}
+               onChange={onChangeHandlerInput}
+               onKeyUp={onKeyUHandler}
+               className={error ? 'error' : ''}/>
+        <button onClick={addTask}>+</button>
+        {error && <div className='errorMessage'>{error}</div>}
+    </div>
+}
