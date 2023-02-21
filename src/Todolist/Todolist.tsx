@@ -1,5 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 import {FilterTask} from "../App";
+import {AddItemForm} from "../AddItemForm";
 
 
 export type TaskType = {
@@ -17,27 +18,13 @@ export type TodolistPropsType = {
     changeTaskStatus: (id: string, isDone: boolean, todolistId: string) => void
     filter: FilterTask
     removeTodolist: (id: string) => void
+
 }
 
 export const Todolist = (props: TodolistPropsType) => {
-    const [title, setTitle] = useState('')
-    const [error, setError] = useState<string | null>(null)
-    const addTask = () => {
-        if (title.trim() !== '') {
-            props.addTask(title.trim(), props.id)
-            setTitle('')
-        } else {
-            setError('Title is required')
-        }
-    }
-    const onKeyUHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-        setError(null)
-        if (event.key === 'KeyUp') {
-            addTask()
-        }
-    }
-    const onChangeHandlerInput = (event: ChangeEvent<HTMLInputElement>) => {
-        setTitle(event.currentTarget.value)
+
+    const addTask = (title: string) => {
+        props.addTask(title, props.id)
     }
 
     const onAllClickHandler = () => {
@@ -49,21 +36,16 @@ export const Todolist = (props: TodolistPropsType) => {
     const onCompletedClickHandler = () => {
         props.changeFilter(props.filter, 'completed')
     }
-    const removeTodolistBotton = () => {
+    const removeTodolist = () => {
         props.removeTodolist(props.id)
     }
 
 
     return <div>
         <h3>{props.title}
-            <button onClick={removeTodolistBotton}>✖</button>
+            <button onClick={removeTodolist}>✖</button>
         </h3>
-        <div>
-            <input value={title} onChange={onChangeHandlerInput} onKeyUp={onKeyUHandler}
-                   className={error ? 'error' : ''}/>
-            <button onClick={addTask}>+</button>
-            {error && <div className='errorMessage'>{error}</div>}
-        </div>
+        <AddItemForm addItem={addTask}/>
         <ul>
             {props.tasks.map((task) => {
                 const onClickHandler = () => {
