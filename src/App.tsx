@@ -34,9 +34,10 @@ function App() {
     })
 
 
-    function removeTask(id: string) {
-        let filteredTasks = tasks.filter(task => task.id !== id)
-        setTasks(filteredTasks)
+    function removeTask(id: string, todolistId: string) {
+        let todolistTasks = tasks[todolistId]
+        tasks[todolistId] = todolistTasks.filter(task => task.id !== id)
+        setTasks({...tasks})
     }
 
 
@@ -48,29 +49,34 @@ function App() {
         }
     }
 
-    function addTask(title: string) {
+    function addTask(title: string, todolistId: string) {
         let task = {id: v1(), title, isDone: false}
-        let newTasks = [task, ...tasks]
-        setTasks(newTasks)
+
+        let todolistTasks = tasks[todolistId]
+        tasks[todolistId] = [task, ...todolistTasks]
+        setTasks({...tasks})
     }
 
-    function changeTaskStatus(id: string, isDone: boolean) {
-        let task = tasks.find(t => t.id === id)
+    function changeTaskStatus(id: string, isDone: boolean,todolistId: string) {
+        let todolistTasks = tasks[todolistId]
+        let task = todolistTasks.find(t => t.id === id)
         if (task) {
             task.isDone = isDone
-            setTasks([...tasks])
+            setTasks({...tasks})
         }
     }
 
     return (
         <div className="App">
             {todolists.map((todolist) => {
-                let tasksForTodolist = tasks
+                let allTodolistTasks = tasks[todolist.id]
+                let tasksForTodolist = allTodolistTasks
+
                 if (todolist.filter === 'active') {
-                    tasksForTodolist = tasks.filter(task => task.isDone === false)
+                    tasksForTodolist = allTodolistTasks.filter(task => !task.isDone)
                 }
                 if (todolist.filter === 'completed') {
-                    tasksForTodolist = tasks.filter(task => task.isDone === true)
+                    tasksForTodolist = allTodolistTasks.filter(task => task.isDone)
                 }
 
                 return <Todolist key={todolist.id}
