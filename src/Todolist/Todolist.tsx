@@ -3,13 +3,13 @@ import {FilterTask} from "../App";
 
 export type TaskType = {
     title: string
-    id: number
+    id: string
     isDone: boolean
 }
 export type TodolistPropsType = {
     title: string
     tasks: TaskType[]
-    removeTask:(taskId:number)=>void
+    removeTask:(taskId:string)=>void
     changeFilter:(value : FilterTask)=>void
 }
 
