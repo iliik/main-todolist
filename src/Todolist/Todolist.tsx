@@ -8,6 +8,7 @@ export type TaskType = {
     isDone: boolean
 }
 export type TodolistPropsType = {
+    id:string
     title: string
     tasks: TaskType[]
     removeTask: (taskId: string) => void
