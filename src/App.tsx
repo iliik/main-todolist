@@ -32,13 +32,20 @@ function App() {
     function changeFilter(value: FilterTask) {
         setFilter(value)
     }
+    function addTask () {
+        let task = {id:v1(),title:'New Task',isDone: false}
+        let newTasks = [task, ...tasks]
+        setTasks(newTasks)
+    }
 
     return (
         <div className="App">
             <Todolist title={'Todos'}
                       tasks={tasksForTodolist}
                       removeTask={removeTask}
-                      changeFilter={changeFilter}/>
+                      changeFilter={changeFilter}
+                      addTask={addTask}
+            />
         </div>
     );
 }
