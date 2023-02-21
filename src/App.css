@@ -13,3 +13,9 @@
 .errorMessage {
   color: red;
 }
+.activeFilter{
+  background-color: darkmagenta;
+}
+.isDone {
+  opacity: 0.5;
+}
