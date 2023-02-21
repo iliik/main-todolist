@@ -13,14 +13,19 @@ export type TodolistPropsType = {
     removeTask: (taskId: string) => void
     changeFilter: (value: FilterTask) => void
     addTask: (title: string) => void
+    changeTaskStatus: (id: string, isDone: boolean) => void
 }
 
 export const Todolist = (props: TodolistPropsType) => {
     const [title, setTitle] = useState('')
-
+    const [error, setError] = useState<string | null>(null)
     const addTask = () => {
-        props.addTask(title)
-        setTitle('')
+        if (title.trim() !== '') {
+            props.addTask(title.trim())
+            setTitle('')
+        } else {
+            setError('Title is required')
+        }
     }
     const onKeyUHandler = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'KeyUp') {
@@ -44,16 +49,21 @@ export const Todolist = (props: TodolistPropsType) => {
     return <div>
         <h3>{props.title}</h3>
         <div>
-            <input value={title} onChange={onChangeHandler} onKeyUp={onKeyUHandler}/>
-            <button onClick={addTask}>+
-            </button>
+            <input value={title} onChange={onChangeHandler} onKeyUp={onKeyUHandler} className={error ? 'error' : ''}/>
+            <button onClick={addTask}>+</button>
+            {error && <div className='errorMessage'>{error}</div> }
         </div>
         <ul>
             {props.tasks.map((task) => {
-                const onClickHandler = () => {props.removeTask(task.id)}
-
+                const onClickHandler = () => {
+                    props.removeTask(task.id)
+                }
+                const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+                    let newIsDoneValue = event.currentTarget.checked
+                    props.changeTaskStatus(task.id, newIsDoneValue)
+                }
                 return <li key={task.id}>
-                    <input type="checkbox" checked={task.isDone}/>
+                    <input type="checkbox" checked={task.isDone} onChange={onChangeHandler} />
                     <span>{task.title}</span>
                     <button onClick={onClickHandler}>✖</button>
                 </li>
