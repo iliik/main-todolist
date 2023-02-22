@@ -17,12 +17,9 @@ type TasksStateType = {
 }
 
 
-function MenuIcon() {
-    return null;
-}
+
 
 function App() {
-
 
     function removeTask(id: string, todolistId: string) {
         //достанем нужный массив по todolistId:
@@ -130,7 +127,6 @@ function App() {
             <AppBar position="static">
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
-                        <MenuIcon/>
                     </IconButton>
                     <Typography variant="h6">
                         Todolist
@@ -139,7 +135,7 @@ function App() {
                 </Toolbar>
             </AppBar>
             <Container fixed>
-                <Grid container>
+                <Grid container style={{padding: '20px'}}>
                     <AddItemForm addItem={addTodolist}/>
                 </Grid>
                 <Grid container spacing={3}>
@@ -156,7 +152,7 @@ function App() {
                             }
 
                             return <Grid item>
-                                <Paper style={{padding:'10px'}}>
+                                <Paper style={{padding: '10px'}}>
                                     <Todolist
                                         key={tl.id}
                                         id={tl.id}
@@ -172,7 +168,6 @@ function App() {
                                         changeTodolistTitle={changeTodolistTitle}
                                     />
                                 </Paper>
-
                             </Grid>
                         })
                     }
