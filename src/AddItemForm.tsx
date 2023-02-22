@@ -35,13 +35,12 @@ export function AddItemForm(props: AddItemFormPropsType) {
         <TextField label="Text" color="secondary"
                    onChange={onChangeHandler}
                    onKeyPress={onKeyPressHandler}
-                   className={error ? "error" : ""}/>
+                   error={!!error}
+                   helperText={error}/>
         <Button style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}}
                 variant="outlined"
                 color="error"
                 onClick={addItem}>+</Button>
 
-
-        {error && <div className="error-message">{error}</div>}
     </div>
 }
