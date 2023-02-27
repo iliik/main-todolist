@@ -13,7 +13,7 @@ import {
     removeTodolistAC,
     todolistsReducer
 } from "./state/todolists-reducer";
-import {changeTaskTitleAC, tasksReducer} from "./state/tasks-reducer";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./state/tasks-reducer";
 
 
 export type FilterValuesType = "all" | "active" | "completed";
@@ -32,12 +32,12 @@ function App() {
     let todolistId1 = v1();
     let todolistId2 = v1();
 
-    let [todolists, dispatchToTodolist] = useReducer(todolistsReducer,[
+    let [todolists, dispatchToTodolist] = useReducer(todolistsReducer, [
         {id: todolistId1, title: "What to learn", filter: "all"},
         {id: todolistId2, title: "What to buy", filter: "all"}
     ])
 
-    let [tasks, dispatchToTasks] = useReducer(tasksReducer,{
+    let [tasks, dispatchToTasks] = useReducer(tasksReducer, {
         [todolistId1]: [
             {id: v1(), title: "HTML&CSS", isDone: true},
             {id: v1(), title: "JS", isDone: true}
@@ -50,45 +50,28 @@ function App() {
 
 
     function removeTask(id: string, todolistId: string) {
-        //достанем нужный массив по todolistId:
-        let todolistTasks = tasks[todolistId];
-        // перезапишем в этом объекте массив для нужного тудулиста отфилтрованным массивом:
-        tasks[todolistId] = todolistTasks.filter(t => t.id != id);
-        // засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
-        setTasks({...tasks});
+        const action = removeTaskAC(id, todolistId)
+        dispatchToTasks(action)
     }
 
     function addTask(title: string, todolistId: string) {
-        let task = {id: v1(), title: title, isDone: false};
-        //достанем нужный массив по todolistId:
-        let todolistTasks = tasks[todolistId];
-        // перезапишем в этом объекте массив для нужного тудулиста копией, добавив в начало новую таску:
-        tasks[todolistId] = [task, ...todolistTasks];
-        // засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
-        setTasks({...tasks});
+        const action = addTaskAC(title, todolistId)
+        dispatchToTasks(action)
     }
 
     function changeStatus(id: string, isDone: boolean, todolistId: string) {
-        //достанем нужный массив по todolistId:
-        let todolistTasks = tasks[todolistId];
-        // найдём нужную таску:
-        let task = todolistTasks.find(t => t.id === id);
-        //изменим таску, если она нашлась
-        if (task) {
-            task.isDone = isDone;
-            // засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
-            setTasks({...tasks});
-        }
+        const action = changeTaskStatusAC(id, isDone, todolistId)
+        dispatchToTasks(action)
     }
 
     function changeTaskTitle(id: string, newTitle: string, todolistId: string) {
-        const action = changeTaskTitleAC(id,newTitle,todolistId)
+        const action = changeTaskTitleAC(id, newTitle, todolistId)
         dispatchToTasks(action)
     }
 
 
     function changeFilter(value: FilterValuesType, todolistId: string) {
-        const action = changeTodolistFilterAC(todolistId,value)
+        const action = changeTodolistFilterAC(todolistId, value)
         dispatchToTodolist(action)
     }
 
@@ -98,7 +81,7 @@ function App() {
     }
 
     function changeTodolistTitle(id: string, title: string) {
-        const action = changeTodolistTitleAC(id,title)
+        const action = changeTodolistTitleAC(id, title)
         dispatchToTodolist(action)
     }
 
@@ -113,7 +96,7 @@ function App() {
             <AppBar position="static">
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
-                        <Menu />
+                        <Menu/>
                     </IconButton>
                     <Typography variant="h6">
                         News
