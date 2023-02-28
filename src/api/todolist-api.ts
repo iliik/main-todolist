@@ -8,10 +8,15 @@ const instance = axios.create({
         'API-KEY': '45e010e4-6515-4f44-948c-de88f0fc6daf'
     }
 })
-
+export type TodolistType = {
+    addedDate: string
+    id: string
+    order: number
+    title: string
+}
 export const todolistAPI = {
     updateTodolist(todolistId: string, title: string) {
-        const promise = instance.put(`todo-lists/${todolistId}`, {title: title},)
+        const promise = instance.put<TodolistType[]>(`todo-lists/${todolistId}`, {title: title},)
         return promise
     },
 
