@@ -1,34 +1,30 @@
 import axios from "axios";
 
-const settings = {
+
+const instance = axios.create({
+    baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     withCredentials: true,
     headers: {
         'API-KEY': '45e010e4-6515-4f44-948c-de88f0fc6daf'
     }
-}
+})
 
 export const todolistAPI = {
     updateTodolist(todolistId: string, title: string) {
-        const promise = axios.put(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}`,
-            {title: title},
-            settings)
+        const promise = instance.put(`todo-lists/${todolistId}`, {title: title},)
         return promise
     },
 
     getTodolist() {
-        const promise = axios.get('https://social-network.samuraijs.com/api/1.1/todo-lists',
-            settings)
+        const promise = instance.get('todo-lists/')
         return promise;
     },
     createTodolist() {
-        const promise = axios.post('https://social-network.samuraijs.com/api/1.1/todo-lists',
-            {title: 'newTodolistsss'}
-            , settings)
+        const promise = axios.post('todo-lists/', {title: 'newTodolistsss'})
         return promise
     },
     deleteTodolist(todolistId: string) {
-        const promise = axios.delete(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}`,
-            settings)
+        const promise = axios.delete(`todo-lists/${todolistId}`)
         return promise
     }
 }
