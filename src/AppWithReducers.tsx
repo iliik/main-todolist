@@ -1,9 +1,10 @@
-import React, {useCallback, useReducer, useState} from 'react';
+import React, {useReducer, useState} from 'react';
 import './App.css';
 import {TaskType, Todolist} from './Todolist';
 import {v1} from 'uuid';
 import {AddItemForm} from './AddItemForm';
-
+import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
+import {Menu} from "@mui/icons-material";
 import {
     addTodolistAC,
     changeTodolistFilterAC,
@@ -12,8 +13,6 @@ import {
     todolistsReducer
 } from './state/todolists-reducer';
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from './state/tasks-reducer';
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
-import {Menu} from "@mui/icons-material";
 
 export type FilterValuesType = "all" | "active" | "completed";
 export type TodolistType = {
@@ -27,7 +26,7 @@ export type TasksStateType = {
 }
 
 
-const AppWithReducers = React.memo(() => {
+function AppWithReducers() {
     let todolistId1 = v1();
     let todolistId2 = v1();
 
@@ -143,6 +142,6 @@ const AppWithReducers = React.memo(() => {
             </Container>
         </div>
     );
-})
+}
 
 export default AppWithReducers;
