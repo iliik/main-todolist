@@ -28,48 +28,48 @@ export type TasksStateType = {
 }
 
 
-const AppWithRedux =React.memo(  ()=> {
+const AppWithRedux = React.memo(() => {
 
     const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todolists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
     const dispatch = useDispatch();
 
-    const  removeTask =useCallback( (id: string, todolistId: string)=>  {
+    const removeTask = useCallback((id: string, todolistId: string) => {
         const action = removeTaskAC(id, todolistId);
         dispatch(action);
     }, [dispatch])
 
-    const addTask = useCallback( (title: string, todolistId: string) =>{
+    const addTask = useCallback((title: string, todolistId: string) => {
         const action = addTaskAC(title, todolistId);
         dispatch(action);
     }, [dispatch])
 
-    const changeStatus = useCallback( (id: string, isDone: boolean, todolistId: string)=>  {
+    const changeStatus = useCallback((id: string, isDone: boolean, todolistId: string) => {
         const action = changeTaskStatusAC(id, isDone, todolistId);
         dispatch(action);
     }, [dispatch])
 
-    const changeTaskTitle = useCallback( (id: string, newTitle: string, todolistId: string) =>{
+    const changeTaskTitle = useCallback((id: string, newTitle: string, todolistId: string) => {
         const action = changeTaskTitleAC(id, newTitle, todolistId);
         dispatch(action);
     }, [dispatch])
 
-    const changeFilter = useCallback((value: FilterValuesType, todolistId: string)=> {
+    const changeFilter = useCallback((value: FilterValuesType, todolistId: string) => {
         const action = changeTodolistFilterAC(todolistId, value);
         dispatch(action);
-    } , [dispatch])
+    }, [dispatch])
 
-    const removeTodolist =  useCallback( (id: string) =>{
+    const removeTodolist = useCallback((id: string) => {
         const action = removeTodolistAC(id);
         dispatch(action);
     }, [dispatch])
 
-    const changeTodolistTitle = useCallback( (id: string, title: string) =>  {
+    const changeTodolistTitle = useCallback((id: string, title: string) => {
         const action = changeTodolistTitleAC(id, title);
         dispatch(action);
     }, [dispatch])
 
-    const addTodolist = useCallback( (title: string)=> {
+    const addTodolist = useCallback((title: string) => {
         const action = addTodolistAC(title);
         dispatch(action);
     }, [dispatch])

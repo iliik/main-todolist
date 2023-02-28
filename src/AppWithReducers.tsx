@@ -1,4 +1,4 @@
-import React, {useReducer, useState} from 'react';
+import React, {useCallback, useReducer, useState} from 'react';
 import './App.css';
 import {TaskType, Todolist} from './Todolist';
 import {v1} from 'uuid';
@@ -27,7 +27,7 @@ export type TasksStateType = {
 }
 
 
-function AppWithReducers() {
+const AppWithReducers = React.memo(() => {
     let todolistId1 = v1();
     let todolistId2 = v1();
 
@@ -143,6 +143,6 @@ function AppWithReducers() {
             </Container>
         </div>
     );
-}
+})
 
 export default AppWithReducers;
