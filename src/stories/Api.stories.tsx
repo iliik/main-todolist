@@ -12,7 +12,7 @@ export const GetTodolist = () => {
     useEffect(() => {
         todolistAPI.getTodolist()
             .then((res) => {
-                debugger
+
                 setState(res.data)
             })
     }, [])
@@ -24,7 +24,7 @@ export const CreateTodolist = () => {
     useEffect(() => {
         todolistAPI.createTodolist()
             .then((res) => {
-                setState(res.data.items)
+                setState(res.data)
             })
     }, [])
 
