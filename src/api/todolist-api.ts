@@ -20,11 +20,11 @@ export const todolistAPI = {
         return promise;
     },
     createTodolist() {
-        const promise = axios.post('todo-lists/', {title: 'newTodolistsss'})
+        const promise = instance.post('todo-lists/', {title: 'newTodolistsss'})
         return promise
     },
     deleteTodolist(todolistId: string) {
-        const promise = axios.delete(`todo-lists/${todolistId}`)
+        const promise = instance.delete(`todo-lists/${todolistId}`)
         return promise
     }
 }
