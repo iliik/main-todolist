@@ -99,9 +99,9 @@ export const setTodolistAC = (todolists: TodolistType[]): SetTodolistsActionType
     return {type: 'SET-TODOLISTS', todolists}
 }
 
-export const fetchTodolistsTC = (dispatch:Dispatch) => {
+export const fetchTodolistsTC = () => (dispatch: Dispatch) => {
     todolistsAPI.getTodolists()
-        .then((res)=>{
+        .then((res) => {
             dispatch(setTodolistAC(res.data))
         })
 }
