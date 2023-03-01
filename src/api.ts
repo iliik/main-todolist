@@ -1,4 +1,5 @@
 import axios from "axios/index";
+import {GetTask} from "./stories/todolists-api.stories";
 
 const setting = {
     baseURL: 'https://social-network.samuraijs.com/api/1.1/todo-lists',
@@ -40,6 +41,10 @@ export const todolistAPI = {
     updateTodolist(todolistId: string, title: string) {
         const promise = axios
             .put<ResponseTodolistType<{}>>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}`, {title: title}, setting)
+        return promise
+    },
+    getTask(todolistId: string) {
+        const promise = axios.get(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}`, setting)
         return promise
     }
 }
