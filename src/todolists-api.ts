@@ -1,4 +1,5 @@
-import axios from "axios/index";
+import axios from "axios";
+
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     withCredentials: true,
@@ -41,5 +42,8 @@ export const todolistAPI = {
     },
     getTask(todolistId: string) {
         return instance.get(`todo-lists/${todolistId}/tasks`)
+    },
+    deleteTask(todolistId:string,taskId:string){
+        return instance.delete(`todo-lists/${todolistId}/tasks/${taskId}`)
     }
 }

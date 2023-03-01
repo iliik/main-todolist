@@ -49,11 +49,24 @@ export const UpdateTodolist = () => {
     }, [])
     return <div>{JSON.stringify(state)}</div>
 }
-export const getTask = () => {
+export const GetTask = () => {
     const [state, setState] = useState<any>(null)
     const todolistId = ''
     useEffect(() => {
         todolistAPI.getTask(todolistId)
+            .then((res) => {
+                setState(res.data)
+            })
+    }, [])
+    return <div>{JSON.stringify(state)}</div>
+}
+
+export const DeleteTask = () => {
+    const [state, setState] = useState<any>(null)
+    const taskId = ''
+    const todolistId = ''
+    useEffect(() => {
+        todolistAPI.deleteTask(todolistId, taskId)
             .then((res) => {
                 setState(res.data)
             })
