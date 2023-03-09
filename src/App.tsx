@@ -38,7 +38,7 @@ function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchTodolistThunk)
+        dispatch(fetchTodolistThunk())
     }, [])
 
 
