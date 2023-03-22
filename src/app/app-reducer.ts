@@ -1,9 +1,12 @@
-const initialState = {
-    status: 'loading' as RequestStatusType,
-    error: 'ssdsdsd'
+const initialState: InitialStateType = {
+    status: 'loading',
+    error: null
 }
 
-type InitialStateType = typeof initialState
+type InitialStateType = {
+    status: RequestStatusType
+    error: string | null
+}
 
 export const appReducer = (state: InitialStateType = initialState, action: ActionType): InitialStateType => {
     switch (action.type) {
