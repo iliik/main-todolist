@@ -3,6 +3,7 @@ import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelTyp
 import {Dispatch} from 'redux'
 import {AppRootStateType} from '../../app/store'
 import {setAppErrorAC, setAppStatusAC, SetAppErrorActionType, SetAppStatusActionType} from "../../app/app-reducer";
+import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 
 
 const initialState: TasksStateType = {}
@@ -69,13 +70,11 @@ export const removeTaskTC = (taskId: string, todolistId: string) => (dispatch: D
                 dispatch(action)
                 dispatch(setAppStatusAC('succeeded'))
             } else {
-                if (res.data.messages.length) {
-
-                }
+                handleServerAppError(res.data, dispatch)
             }
         })
         .catch((error) => {
-
+            handleServerNetworkError(error, dispatch)
         })
 }
 export const addTaskTC = (title: string, todolistId: string) => (dispatch: Dispatch<ActionsType | SetAppErrorActionType>) => {
@@ -88,17 +87,11 @@ export const addTaskTC = (title: string, todolistId: string) => (dispatch: Dispa
                 dispatch(action)
                 dispatch(setAppStatusAC('succeeded'))
             } else {
-                if (res.data.messages.length) {
-                    dispatch(setAppErrorAC(res.data.messages[0]))
-                } else {
-                    dispatch(setAppErrorAC('Some Error occurred'))
-                }
-                dispatch(setAppStatusAC('failed'))
+                handleServerAppError(res.data, dispatch)
             }
         })
         .catch((error) => {
-            dispatch(setAppErrorAC(error.message))
-            dispatch(setAppStatusAC('failed'))
+            handleServerNetworkError(error, dispatch)
         })
 }
 export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelType, todolistId: string) =>
@@ -129,18 +122,14 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelT
                     dispatch(action)
                     dispatch(setAppStatusAC('succeeded'))
                 } else {
-                    if (res.data.messages.length) {
-                        dispatch(setAppErrorAC(res.data.messages[0]))
-                    } else {
-                        dispatch(setAppErrorAC('Some Error occurred'))
-                    }
-                    dispatch(setAppStatusAC('failed'))}
+                    handleServerAppError(res.data, dispatch)
+                }
             })
             .catch((error) => {
-                dispatch(setAppErrorAC(error.message))
-                dispatch(setAppStatusAC('failed'))
+                handleServerNetworkError(error, dispatch)
             })
     }
+
 
 // types
 export type UpdateDomainTaskModelType = {
