@@ -2,7 +2,8 @@ import {AddTodolistActionType, RemoveTodolistActionType, SetTodolistsActionType}
 import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelType} from '../../api/todolists-api'
 import {Dispatch} from 'redux'
 import {AppRootStateType} from '../../app/store'
-import {setAppErrorAC, setAppStatusAC, SetErrorActionType, SetStatusActionType} from "../../app/app-reducer";
+import {setAppErrorAC, setAppStatusAC, SetAppErrorActionType, SetAppStatusActionType} from "../../app/app-reducer";
+
 
 const initialState: TasksStateType = {}
 
@@ -59,16 +60,25 @@ export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch<ActionsT
             dispatch(setAppStatusAC('succeeded'))
         })
 }
-export const removeTaskTC = (taskId: string, todolistId: string) => (dispatch: Dispatch<ActionsType | SetStatusActionType>) => {
+export const removeTaskTC = (taskId: string, todolistId: string) => (dispatch: Dispatch<ActionsType | SetAppStatusActionType>) => {
     dispatch(setAppStatusAC('loading'))
     todolistsAPI.deleteTask(todolistId, taskId)
         .then(res => {
-            const action = removeTaskAC(taskId, todolistId)
-            dispatch(action)
-            dispatch(setAppStatusAC('succeeded'))
+            if (res.data.resultCode === 0) {
+                const action = removeTaskAC(taskId, todolistId)
+                dispatch(action)
+                dispatch(setAppStatusAC('succeeded'))
+            } else {
+                if (res.data.messages.length) {
+
+                }
+            }
+        })
+        .catch((error) => {
+
         })
 }
-export const addTaskTC = (title: string, todolistId: string) => (dispatch: Dispatch<ActionsType | SetErrorActionType>) => {
+export const addTaskTC = (title: string, todolistId: string) => (dispatch: Dispatch<ActionsType | SetAppErrorActionType>) => {
     dispatch(setAppStatusAC('loading'))
     todolistsAPI.createTask(todolistId, title)
         .then(res => {
@@ -77,18 +87,22 @@ export const addTaskTC = (title: string, todolistId: string) => (dispatch: Dispa
                 const action = addTaskAC(task)
                 dispatch(action)
                 dispatch(setAppStatusAC('succeeded'))
-
             } else {
                 if (res.data.messages.length) {
                     dispatch(setAppErrorAC(res.data.messages[0]))
                 } else {
                     dispatch(setAppErrorAC('Some Error occurred'))
                 }
+                dispatch(setAppStatusAC('failed'))
             }
+        })
+        .catch((error) => {
+            dispatch(setAppErrorAC(error.message))
+            dispatch(setAppStatusAC('failed'))
         })
 }
 export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelType, todolistId: string) =>
-    (dispatch: Dispatch<ActionsType>, getState: () => AppRootStateType) => {
+    (dispatch: ThunkDispatch, getState: () => AppRootStateType) => {
         const state = getState()
         const task = state.tasks[todolistId].find(t => t.id === taskId)
         if (!task) {
@@ -109,8 +123,22 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelT
 
         todolistsAPI.updateTask(todolistId, taskId, apiModel)
             .then(res => {
-                const action = updateTaskAC(taskId, domainModel, todolistId)
-                dispatch(action)
+                if (res.data.resultCode === 0) {
+                    const task = res.data.data.item
+                    const action = addTaskAC(task)
+                    dispatch(action)
+                    dispatch(setAppStatusAC('succeeded'))
+                } else {
+                    if (res.data.messages.length) {
+                        dispatch(setAppErrorAC(res.data.messages[0]))
+                    } else {
+                        dispatch(setAppErrorAC('Some Error occurred'))
+                    }
+                    dispatch(setAppStatusAC('failed'))}
+            })
+            .catch((error) => {
+                dispatch(setAppErrorAC(error.message))
+                dispatch(setAppStatusAC('failed'))
             })
     }
 
@@ -134,5 +162,5 @@ type ActionsType =
     | RemoveTodolistActionType
     | SetTodolistsActionType
     | ReturnType<typeof setTasksAC>
-    | SetStatusActionType
-
+    | SetAppStatusActionType
+type ThunkDispatch = Dispatch<ActionsType | SetAppStatusActionType | SetAppErrorActionType>
