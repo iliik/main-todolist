@@ -34,23 +34,28 @@ export const Login = () => {
                     <p>Password: free</p>
                 </FormLabel>
                 <FormGroup>
-                    <form>
-                        <TextField label="Email"
-                                   margin="normal"
-                                   onChange={formik.handleChange}
-                                   value={formik.values.email}
-                        />
-                        <TextField type="password"
-                                   label="Password"
-                                   margin="normal"
-                                   onChange={formik.handleChange}
-                                   value={formik.values.email}
-                        />
-                        <FormControlLabel label={'Remember me'} control={<Checkbox name={''}/>}/>
-                        <Button type={'submit'} variant={'contained'} color={'primary'}>
-                            Login
-                        </Button>
-                    </form>
+                    <TextField label="Email"
+                               margin="normal"
+                               name={'email'}
+                               onChange={formik.handleChange}
+                               value={formik.values.email}
+                    />
+                    <TextField type="password"
+                               label="Password"
+                               name={"Password"}
+                               margin="normal"
+                               onChange={formik.handleChange}
+                               value={formik.values.password}
+                    />
+                    <FormControlLabel
+                        label={'Remember me'}
+                        control={<Checkbox
+                            name={'rememberMe'}
+                            onChange={formik.handleChange}
+                            value={formik.values.rememberMe}/>}/>
+                    <Button type={'submit'} variant={'contained'} color={'primary'}>
+                        Login
+                    </Button>
                 </FormGroup>
             </FormControl>
         </Grid>
