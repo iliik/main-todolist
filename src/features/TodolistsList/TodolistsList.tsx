@@ -26,6 +26,7 @@ export const TodolistsList: React.FC = () => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
+        if (!isLoggedIn) return
         const thunk = fetchTodolistsTC()
         dispatch(thunk)
     }, [])
@@ -70,7 +71,7 @@ export const TodolistsList: React.FC = () => {
         dispatch(thunk)
     }, [dispatch])
 
-    if(!isLoggedIn){
+    if (!isLoggedIn) {
         return <Navigate to={'/login'}/>
     }
     return <>
