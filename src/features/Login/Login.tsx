@@ -9,6 +9,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useFormik} from "formik";
 import {useDispatch} from "react-redux";
+import {loginTC} from "./auth-reducer";
 
 export const Login = () => {
     const dispatch = useDispatch()
@@ -35,7 +36,7 @@ export const Login = () => {
             return errors
         },
         onSubmit: (values) => {
-            dispatch()
+            dispatch(loginTC(values))
             formik.resetForm()
         }
     })
