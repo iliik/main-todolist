@@ -19,11 +19,12 @@ export const authReducer = (state: InitialStateType = initialState, action: Acti
 export const setISLoggedInAC = (value: boolean) => ({type: 'login/SET-IS-LOGIN-IN', value} as const)
 
 export const loginTC = (data: LoginType) => async (dispatch: Dispatch<ActionType>) => {
-
+dispatch(setAppStatusAC('loading'))
     try {
         const res = await authAPI.login(data)
         if (res.data.resultCode === 0) {
             dispatch(setISLoggedInAC(true))
+            dispatch(setAppStatusAC('succeeded'))
         } else {
             handleServerAppError(res.data, dispatch)
         }
