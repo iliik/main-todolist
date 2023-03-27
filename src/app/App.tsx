@@ -16,16 +16,22 @@ import {Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "../features/Login/Login";
 import {meTC} from "../features/Login/auth-reducer";
 import {useDispatch} from "react-redux";
+import {CircularProgress} from "@mui/material";
 
 
 function App() {
     const status = useAppSelector<RequestStatusType>((state) => state.app.status)
+    const isInitialized = useAppSelector<boolean>((state) => state.app.isInitialized)
     const dispatch = useDispatch()
 
-    useEffect(()=>{
+    useEffect(() => {
         // @ts-ignore
         dispatch(meTC())
     })
+    if (!isInitialized) {
+        return <div style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}><CircularProgress/>
+        </div>
+    }
     return (
         <div className="App">
             <ErrorSnackbar/>
@@ -46,7 +52,7 @@ function App() {
                     <Route path={'/'} element={<TodolistsList/>}/>
                     <Route path={'/login'} element={<Login/>}/>
                     <Route path={'*'} element={<Navigate to={'404'}/>}/>
-                    <Route path={'/404'} element={<h1 style={{textAlign:"center"}}>404: PAGE NOT FOUND</h1>}/>
+                    <Route path={'/404'} element={<h1 style={{textAlign: "center"}}>404: PAGE NOT FOUND</h1>}/>
                 </Routes>
             </Container>
         </div>
