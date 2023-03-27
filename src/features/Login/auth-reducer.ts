@@ -33,4 +33,19 @@ dispatch(setAppStatusAC('loading'))
     }
     dispatch(setAppStatusAC('loading'))
 }
+export const meTC = () => async (dispatch: Dispatch<ActionType>) => {
+    dispatch(setAppStatusAC('loading'))
+    try {
+        const res = await authAPI.me()
+        if (res.data.resultCode === 0) {
+            dispatch(setISLoggedInAC(true))
+            dispatch(setAppStatusAC('succeeded'))
+        } else {
+            handleServerAppError(res.data, dispatch)
+        }
+    } catch (e: any) {
+        handleServerNetworkError(e, dispatch)
+    }
+    dispatch(setAppStatusAC('loading'))
+}
 type ActionType = ReturnType<typeof setISLoggedInAC> | SetAppStatusActionType | SetAppErrorActionType

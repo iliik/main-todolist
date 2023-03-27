@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import './App.css'
 import {TodolistsList} from '../features/TodolistsList/TodolistsList'
 import {useAppSelector} from './store'
@@ -14,10 +14,18 @@ import {Menu} from '@mui/icons-material';
 import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar'
 import {Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "../features/Login/Login";
+import {meTC} from "../features/Login/auth-reducer";
+import {useDispatch} from "react-redux";
 
 
 function App() {
     const status = useAppSelector<RequestStatusType>((state) => state.app.status)
+    const dispatch = useDispatch()
+
+    useEffect(()=>{
+        // @ts-ignore
+        dispatch(meTC())
+    })
     return (
         <div className="App">
             <ErrorSnackbar/>

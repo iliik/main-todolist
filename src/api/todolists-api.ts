@@ -14,9 +14,18 @@ export type LoginType={
     captcha?:string
 }
 
+export type UserType={
+    id:number
+    email:string
+    login:string
+}
+
 export const authAPI = {
     login(data:LoginType) {
         return instance.post<LoginType, AxiosResponse<ResponseType<{ userId:number }>>>('auth/login', {data});
+    },
+    me() {
+        return instance.get<ResponseType<UserType>>('auth/me');
     }
 }
 
