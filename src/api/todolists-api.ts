@@ -26,6 +26,9 @@ export const authAPI = {
     },
     me() {
         return instance.get<ResponseType<UserType>>('auth/me');
+    },
+    logOut() {
+        return instance.delete<ResponseType>('auth/login');
     }
 }
 
